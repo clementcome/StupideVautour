@@ -1,14 +1,22 @@
 import numpy as np
+from time import time
+from typing import List, Dict, Union, Tuple
+import json
+
+from player import Player, RandomPlayer, MaxPlayer
 
 
 class Game:
-    def __init__(self, n_player, random=False, verbose=True) -> None:
+    def __init__(
+        self, n_player: int, n_game: int = 1, random: bool = False, verbose: bool = True
+    ) -> None:
         super().__init__()
         self.n_player_ = n_player
+        self.n_game_ = n_game
         self.verbose_ = verbose
         self.card_list_ = list(range(-5, 0)) + list(range(1, 11))
         np.random.shuffle(self.card_list_)
-        self.player_list_ = [RandomPlayer(i) for i in range(n_player)]
+        self.player_list_: List[Player] = [RandomPlayer(i) for i in range(n_player)]
         self.player_score_list_ = [0 for _ in range(n_player)]
         if not (random):
             for i in range(n_player):
@@ -23,7 +31,7 @@ class Game:
             print("and cards:", self.card_list_)
             print("---")
 
-    def bonus(self, card_list, card):
+    def bonus(self, card_list: List[int], card: int) -> Union[Player, None]:
         while True:
             m = max(card_list)
             if m == 0:
@@ -42,7 +50,7 @@ class Game:
             else:
                 card_list = [card if card != m else 0 for card in card_list]
 
-    def malus(self, card_list, card):
+    def malus(self, card_list: List[int], card: int) -> Union[Player, None]:
         while True:
             m = min(card_list)
             if m == 16:
@@ -61,7 +69,7 @@ class Game:
             else:
                 card_list = [card if card != m else 16 for card in card_list]
 
-    def turn(self, card):
+    def turn(self, card: int) -> Tuple[Player, List[int]]:
         if self.verbose_:
             print("Card for this turn is:", card)
         player_card_list = [player.play(card) for player in self.player_list_]
@@ -70,64 +78,76 @@ class Game:
             for player, player_card in zip(self.player_list_, player_card_list):
                 print(f"{player}: {player_card}")
         if card > 0:
-            return self.bonus(player_card_list, card)
+            getter = self.bonus(player_card_list, card)
         else:
-            return self.malus(player_card_list, card)
+            getter = self.malus(player_card_list, card)
 
-    def play(self):
+        if getter is None:
+            for player in self.player_list_:
+                player.no_one_get(card)
+        else:
+            for player in self.player_list_:
+                if player == getter:
+                    player.get(card)
+                else:
+                    player.dont_get(card)
+
+        return getter, player_card_list
+
+    def play(self) -> Tuple[List[Player], List[Dict], List[Player]]:
+        start_time = time()
+        game = []
         for card in self.card_list_:
-            self.turn(card)
+            turn_winner, player_card_list = self.turn(card)
+            game.append(
+                {
+                    "card": card,
+                    "player_card_list": player_card_list,
+                    "turn_winner": str(turn_winner),
+                }
+            )
+        winner_score = max(self.player_score_list_)
+        winner_list = []
         if self.verbose_:
             print("Final scores:")
             for player, score in zip(self.player_list_, self.player_score_list_):
-                print(f"{player}'s score:", score)
-
-
-class Player:
-    def __init__(self, name) -> None:
-        super().__init__()
-        self.name_ = name
-        self.card_list_ = [i for i in range(1, 16)]
-
-    def __repr__(self) -> str:
-        return f"{self.name_}"
-
-    def play(self, point_card):
-        print("Card for this turn is:", point_card)
-        while True:
-            print(f"{self.name_}' cards available", self.card_list_)
-            card = int(input(f"{self.name_}'s card: "))
-            if card in self.card_list_:
-                break
+                if score == winner_score:
+                    print(f"{player}'s score: {score} | Winner")
+                else:
+                    print(f"{player}'s score:", score)
+            print(f"Game took {time() - start_time}s")
+        for player, score in zip(self.player_list_, self.player_score_list_):
+            if score == winner_score:
+                player.win()
+                winner_list.append(player)
             else:
-                print(f"{card} is not available")
-        self.card_list_.remove(card)
-        return card
-
-
-class MaxPlayer(Player):
-    def __repr__(self) -> str:
-        return f"MaxPlayer {self.name_}"
-
-    def play(self, point_card):
-        card = max(self.card_list_)
-        self.card_list_.remove(card)
-        return card
-
-
-class RandomPlayer(Player):
-    def __init__(self, name) -> None:
-        super().__init__(name)
-
-    def __repr__(self) -> str:
-        return f"RandomPlayer {self.name_}"
-
-    def play(self, point_card):
-        card = np.random.choice(self.card_list_)
-        self.card_list_.remove(card)
-        return card
+                player.lose()
+            player.end_game()
+        self.card_list_ = list(range(-5, 0)) + list(range(1, 11))
+        np.random.shuffle(self.card_list_)
+        self.n_game_ = self.n_game_ - 1
+        self.player_score_list_ = [0 for _ in range(self.n_player_)]
+        return self.player_list_, game, winner_list
 
 
 if __name__ == "__main__":
-    game = Game(2)
-    game.play()
+    game = Game(2, n_game=2, random=True, verbose=False)
+    game_summary_list = []
+    winner_list_list = []
+    while game.n_game_ > 0:
+        player_list, game_summary, winner_list = game.play()
+        game_summary_list.append(game_summary)
+        winner_list_list.append(list(map(str, winner_list)))
+    # print(player_list)
+    # print(game_summary_list)
+    # print(winner_list_list)
+    with open("summary_2p_2g_random_1.json", "w") as f:
+        json.dump(
+            {
+                "player_list": list(map(str, player_list)),
+                "game_summary_list": game_summary_list,
+                "winner_list_list": winner_list_list,
+            },
+            f,
+            indent=4,
+        )
