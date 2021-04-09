@@ -9,9 +9,40 @@ from player import Player, RandomPlayer, MaxPlayer, NNPlayer
 
 
 class Game:
+    """
+    Implements Stupide Vautour game with the following main functions:
+    - `bonus` and `malus` will deal with every player's card to determine
+    which one got the card
+    - `turn` will allow every player to play at one turn
+    - `play` will perform all the turns that contribute to a full game
+    For the original game see: https://www.gigamic.com/jeu/stupide-vautour
+    """
+
     def __init__(
         self, n_player: int, n_game: int = 1, random: bool = False, verbose: bool = True
     ) -> None:
+        """
+        Initialize the game
+
+        Parameters
+        ----------
+        n_player : int
+            Number of players in the game
+        n_game : int, optional
+            Number of game to perform
+            Not used right now, by default 1
+        random : bool, optional
+            True -> Initialize all the players with RandomPlayers
+            False -> Ask for names of each player:
+                - No name provided: the player will stay random
+                - "max" provided as the name: the player will be a MaxPlayer
+                - Another name is provided: A normal player 
+                    (asks for card in the console)
+            , by default False
+        verbose : bool, optional
+            Whether to print or not messages during evolution
+            of the game, by default True
+        """
         super().__init__()
         self.n_player_ = n_player
         self.n_game_ = n_game
@@ -34,6 +65,23 @@ class Game:
             print("---")
 
     def bonus(self, card_list: List[int], card: int) -> Union[Player, None]:
+        """
+        Handles the outcome of a turn when the card is positive
+        Needs to handle the tie cases
+
+        Parameters
+        ----------
+        card_list : List[int]
+            List of the cards provided the players
+        card : int
+            Card to be won at the turn
+
+        Returns
+        -------
+        Union[Player, None]
+            Returns the player that won the card if there is one
+            else returns None
+        """
         while True:
             m = max(card_list)
             if m == 0:
@@ -53,6 +101,23 @@ class Game:
                 card_list = [card if card != m else 0 for card in card_list]
 
     def malus(self, card_list: List[int], card: int) -> Union[Player, None]:
+        """
+        Handles the outcome of a turn when the card is negative
+        Needs to handle the tie cases
+
+        Parameters
+        ----------
+        card_list : List[int]
+            List of the cards provided the players
+        card : int
+            Card to be won at the turn
+
+        Returns
+        -------
+        Union[Player, None]
+            Returns the player that won the card if there is one
+            else returns None
+        """
         while True:
             m = min(card_list)
             if m == 16:
@@ -72,6 +137,25 @@ class Game:
                 card_list = [card if card != m else 16 for card in card_list]
 
     def turn(self, card: int, turn: int) -> Tuple[Player, List[int]]:
+        """
+        Performs a turn of the game:
+        - Retrieves the car played by each player
+        - Determines the winner of turn
+        - Inform each player of the outcome of the turn
+
+        Parameters
+        ----------
+        card : int
+            Card picked for this turn
+        turn : int
+            Number of the turn to be played
+
+        Returns
+        -------
+        Tuple[Player, List[int]]
+            Returns the player that one this turn and 
+            the cards played by each player
+        """
         if self.verbose_:
             print("Card for this turn is:", card)
         player_card_list = [player.play(card, turn) for player in self.player_list_]
@@ -97,6 +181,16 @@ class Game:
         return getter, player_card_list
 
     def play(self) -> Tuple[List[Player], List[Dict], List[Player]]:
+        """
+        Performs all the turns needed to do a whole game
+
+        Returns
+        -------
+        Tuple[List[Player], List[Dict], List[Player]]
+            A list of the players that took part to the game,
+            the record of the whole game,
+            the list of all winners at each turn
+        """
         start_time = time()
         game = []
         for i, card in enumerate(self.card_list_):

@@ -4,6 +4,11 @@ from scipy.special import softmax
 
 
 class Player:
+    """
+    A classic player that will be asked which card he wants to play
+    in the console
+    """
+
     def __init__(self, name: str) -> None:
         super().__init__()
         self.name_: str = name
@@ -46,6 +51,12 @@ class Player:
 
 
 class NNPlayer(Player):
+    """
+    Player taking its decision based on neural network outputs
+    for probability of cards to be picked based on the
+    card to be won and the turn.
+    """
+
     def __init__(self, name: str, weights=None, learning_rate=0.5, n_player=2,) -> None:
         super().__init__(name)
         if weights is None:
@@ -108,6 +119,10 @@ class NNPlayer(Player):
 
 
 class MaxPlayer(Player):
+    """
+    Plays the max card available.
+    """
+
     def __repr__(self) -> str:
         return f"MaxPlayer {self.name_}"
 
@@ -118,6 +133,10 @@ class MaxPlayer(Player):
 
 
 class RandomPlayer(Player):
+    """
+    Plays random card.
+    """
+
     def __repr__(self) -> str:
         return f"RandomPlayer {self.name_}"
 
