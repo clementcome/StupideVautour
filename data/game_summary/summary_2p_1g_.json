@@ -1,0 +1,135 @@
+{
+    "player_list": [
+        "RandomPlayer 0",
+        "Eva"
+    ],
+    "game_summary_list": [
+        [
+            {
+                "card": 10,
+                "player_card_list": [
+                    15,
+                    15
+                ],
+                "turn_winner": "None"
+            },
+            {
+                "card": -3,
+                "player_card_list": [
+                    7,
+                    11
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 9,
+                "player_card_list": [
+                    14,
+                    14
+                ],
+                "turn_winner": "None"
+            },
+            {
+                "card": 5,
+                "player_card_list": [
+                    8,
+                    9
+                ],
+                "turn_winner": "Eva"
+            },
+            {
+                "card": 6,
+                "player_card_list": [
+                    11,
+                    10
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 8,
+                "player_card_list": [
+                    13,
+                    13
+                ],
+                "turn_winner": "None"
+            },
+            {
+                "card": 2,
+                "player_card_list": [
+                    3,
+                    1
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -1,
+                "player_card_list": [
+                    9,
+                    4
+                ],
+                "turn_winner": "Eva"
+            },
+            {
+                "card": 7,
+                "player_card_list": [
+                    6,
+                    12
+                ],
+                "turn_winner": "Eva"
+            },
+            {
+                "card": 4,
+                "player_card_list": [
+                    1,
+                    2
+                ],
+                "turn_winner": "Eva"
+            },
+            {
+                "card": -2,
+                "player_card_list": [
+                    4,
+                    5
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -5,
+                "player_card_list": [
+                    5,
+                    8
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -4,
+                "player_card_list": [
+                    12,
+                    7
+                ],
+                "turn_winner": "Eva"
+            },
+            {
+                "card": 3,
+                "player_card_list": [
+                    10,
+                    6
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 1,
+                "player_card_list": [
+                    2,
+                    3
+                ],
+                "turn_winner": "Eva"
+            }
+        ]
+    ],
+    "winner_list_list": [
+        [
+            "Eva"
+        ]
+    ]
+}

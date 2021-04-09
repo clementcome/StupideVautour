@@ -1,0 +1,260 @@
+{
+    "player_list": [
+        "RandomPlayer 0",
+        "RandomPlayer 1"
+    ],
+    "game_summary_list": [
+        [
+            {
+                "card": 1,
+                "player_card_list": [
+                    9,
+                    12
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 2,
+                "player_card_list": [
+                    3,
+                    7
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": -2,
+                "player_card_list": [
+                    8,
+                    14
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -5,
+                "player_card_list": [
+                    15,
+                    15
+                ],
+                "turn_winner": "None"
+            },
+            {
+                "card": 6,
+                "player_card_list": [
+                    2,
+                    11
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 4,
+                "player_card_list": [
+                    13,
+                    3
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 9,
+                "player_card_list": [
+                    11,
+                    10
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 10,
+                "player_card_list": [
+                    10,
+                    8
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 7,
+                "player_card_list": [
+                    5,
+                    13
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": -1,
+                "player_card_list": [
+                    7,
+                    2
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 8,
+                "player_card_list": [
+                    4,
+                    5
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 5,
+                "player_card_list": [
+                    1,
+                    4
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": -4,
+                "player_card_list": [
+                    6,
+                    1
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 3,
+                "player_card_list": [
+                    14,
+                    6
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -3,
+                "player_card_list": [
+                    12,
+                    9
+                ],
+                "turn_winner": "RandomPlayer 1"
+            }
+        ],
+        [
+            {
+                "card": 7,
+                "player_card_list": [
+                    7,
+                    1
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 2,
+                "player_card_list": [
+                    15,
+                    6
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -4,
+                "player_card_list": [
+                    1,
+                    10
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -2,
+                "player_card_list": [
+                    10,
+                    8
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": -1,
+                "player_card_list": [
+                    8,
+                    5
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 10,
+                "player_card_list": [
+                    4,
+                    13
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 1,
+                "player_card_list": [
+                    14,
+                    7
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 5,
+                "player_card_list": [
+                    12,
+                    2
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -3,
+                "player_card_list": [
+                    3,
+                    15
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": -5,
+                "player_card_list": [
+                    5,
+                    9
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 3,
+                "player_card_list": [
+                    9,
+                    12
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 6,
+                "player_card_list": [
+                    2,
+                    4
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 9,
+                "player_card_list": [
+                    6,
+                    14
+                ],
+                "turn_winner": "RandomPlayer 1"
+            },
+            {
+                "card": 8,
+                "player_card_list": [
+                    13,
+                    11
+                ],
+                "turn_winner": "RandomPlayer 0"
+            },
+            {
+                "card": 4,
+                "player_card_list": [
+                    11,
+                    3
+                ],
+                "turn_winner": "RandomPlayer 0"
+            }
+        ]
+    ],
+    "winner_list_list": [
+        [
+            "RandomPlayer 0"
+        ],
+        [
+            "RandomPlayer 1"
+        ]
+    ]
+}
