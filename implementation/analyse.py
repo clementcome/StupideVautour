@@ -88,16 +88,23 @@ def plot_hist_winner_by_card(df_game: pd.DataFrame):
         ax.set_title(value)
     plt.plot()
 
-def plot_win_over_time(df_game: pd.DataFrame, window=100) -> pd.DataFrame:
-    print("Number of games in df_game:", df_game["game"].nunique())
-    df_nn_clean = df_game[df_game["game_winner"].apply(len) == 1]
-    print("Number of games with a unique winner:", df_nn_clean["game"].nunique())
-    df_nn_clean["game_winner"] = df_nn_clean["game_winner"].apply(lambda x: x[0])
-    df_nn_win = pd.DataFrame(df_nn_clean.groupby("game")["game_winner"].first())
-    for player in df_nn_win["game_winner"].value_counts().index:
-        df_nn_win[f"{player}_won"] = df_nn_win["game_winner"] == player
-    (df_nn_win.drop(columns=["game_winner"]).rolling(window, min_periods=1).sum()).plot()
-    return df_nn_win
+def plot_win_over_time(df_game: pd.DataFrame, player_list=None, window=100, fig=None, ax=None, display=True) -> pd.DataFrame:
+    df_clean = df_game[df_game["game_winner"].apply(len) == 1]
+    df_clean["game_winner"] = df_clean["game_winner"].apply(lambda x: x[0])
+    df_win = pd.DataFrame(df_clean.groupby("game")["game_winner"].first())
+    for player_idx in df_win["game_winner"].unique():
+        if player_list is not None:
+            player = player_list[player_idx]
+        else:
+            player = player_idx
+        df_win[f"{player}"] = df_win["game_winner"] == player_idx
+    if display:
+        if fig is None:
+            fig, ax = plt.subplots()
+        print("Number of games in df_game:", df_game["game"].nunique())
+        print("Number of games with a unique winner:", df_clean["game"].nunique())
+        (df_win.drop(columns=["game_winner"]).rolling(window, min_periods=1).sum()).plot(ax=ax)
+    return df_win
 
 
 if __name__ == "__main__":

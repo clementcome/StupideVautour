@@ -5,7 +5,7 @@ from typing import List, Dict, Union, Tuple
 import json
 import pickle
 
-from player import Player, RandomPlayer, MaxPlayer, NNPlayer
+from player import Player, RandomPlayer, MaxPlayer, MinPlayer, NNPlayer, BonusCravingPlayer, MalusAdverse, GetRidOfBadCards, Robot, MCPlayer
 
 
 class Game:
@@ -19,13 +19,16 @@ class Game:
     """
 
     def __init__(
-        self, n_player: int, n_game: int = 1, random: bool = False, verbose: bool = True
+        self, n_player: int, n_cards: int = 5, n_game: int = 1, random: bool = False, verbose: bool = True ##
     ) -> None:
         """
         Initialize the game
 
         Parameters
         ----------
+        n_cards : int
+            Number of the deck's malus cards so that the game has n_cards of malus cards and 3*n_cards of bonus cards. 
+            Standard game is played with n_cards = 5.
         n_player : int
             Number of players in the game
         n_game : int, optional
@@ -44,21 +47,34 @@ class Game:
             of the game, by default True
         """
         super().__init__()
+        self.n_cards = n_cards ## I want to use it in Player class
         self.n_player_ = n_player
         self.n_game_ = n_game
         self.verbose_ = verbose
-        self.card_list_ = list(range(-5, 0)) + list(range(1, 11))
+        self.card_list_ = list(range(-self.n_cards, 0)) + list(range(1, 2*self.n_cards + 1)) ##
         np.random.shuffle(self.card_list_)
-        self.player_list_: List[Player] = [RandomPlayer(i) for i in range(n_player)]
+        self.player_list_: List[Player] = [RandomPlayer(i, self.n_cards) for i in range(n_player)]
         self.player_score_list_ = [0 for _ in range(n_player)]
         if not (random):
             for i in range(n_player):
                 player_name = input(f"Name of player {i}: ")
                 if player_name != "":
                     if player_name == "max":
-                        self.player_list_[i] = MaxPlayer(i)
+                        self.player_list_[i] = MaxPlayer(i,self.n_cards)
+                    if player_name == 'min':
+                        self.player_list_[i] = MinPlayer(i,self.n_cards)
+                    if player_name == 'NN':
+                        self.player_list_[i] = NNPlayer(i,self.n_cards, learning_rate=0.5, n_player=self.n_player_)
+                    if player_name == 'bonus craving':
+                        self.player_list_[i] = BonusCravingPlayer(i,self.n_cards)
+                    if player_name == 'malus adverse':
+                        self.player_list_[i] = MalusAdverse(i,self.n_cards)
+                    if player_name == 'get rid of bad cards':
+                        self.player_list_[i] = GetRidOfBadCards(i,self.n_cards)
+                    if player_name == 'MC':
+                        self.player_list_[i] = MCPlayer(i,self.n_cards,[1.0, 0.99999, 0.05])
                     else:
-                        self.player_list_[i] = Player(player_name)
+                        self.player_list_[i] = Player(player_name,self.n_cards)
         if self.verbose_:
             print("Game ready with players:", self.player_list_)
             print("and cards:", self.card_list_)
@@ -98,7 +114,7 @@ class Game:
                     print("---")
                 return player
             else:
-                card_list = [card if card != m else 0 for card in card_list]
+                card_list = [card if card != m else 0 for card in card_list] # ties are broken by taking next highest value card
 
     def malus(self, card_list: List[int], card: int) -> Union[Player, None]:
         """
@@ -120,7 +136,8 @@ class Game:
         """
         while True:
             m = min(card_list)
-            if m == 16:
+            upper = self.n_cards * 3 + 1 ##
+            if m == upper: # this is impossible for the first loop, while m == 16 was if we extend the game with more than 16 cards in hand ##
                 if self.verbose_:
                     print("No one won this card")
                     print("---")
@@ -134,7 +151,7 @@ class Game:
                     print("---")
                 return player
             else:
-                card_list = [card if card != m else 16 for card in card_list]
+                card_list = [card if card != m else upper for card in card_list] ##
 
     def turn(self, card: int, turn: int) -> Tuple[Player, List[int]]:
         """
@@ -214,12 +231,12 @@ class Game:
             print(f"Game took {time() - start_time}s")
         for player, score in zip(self.player_list_, self.player_score_list_):
             if score == winner_score:
-                player.win()
+                player.win(self.n_player_)
                 winner_list.append(player)
             else:
-                player.lose()
+                player.lose(self.n_player_)
             player.end_game()
-        self.card_list_ = list(range(-5, 0)) + list(range(1, 11))
+        self.card_list_ = list(range(-self.n_cards, 0)) + list(range(1, 2*self.n_cards + 1)) ##
         np.random.shuffle(self.card_list_)
         self.n_game_ = self.n_game_ - 1
         self.player_score_list_ = [0 for _ in range(self.n_player_)]
