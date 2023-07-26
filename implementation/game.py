@@ -248,10 +248,11 @@ if __name__ == "__main__":
     n_player = 2
     n_game = 1
     game = Game(n_player, n_game=n_game, random=True, verbose=True)
-    nn_player_1 = NNPlayer("Tristan", learning_rate=0.6)
-    player_2 = Player("Eva")
-    # game.player_list_[0] = nn_player_1
-    game.player_list_[1] = player_2
+    nn_player_1 = NNPlayer("Tristan", n_cards=5, learning_rate=0.6)
+    nn_player_2 = NNPlayer("Raphaëlle", n_cards=5, learning_rate=0.6)
+    player_2 = Player("Raphaëlle")
+    game.player_list_[0] = nn_player_2
+    game.player_list_[1] = nn_player_1
     game_summary_list = []
     winner_list_list = []
     for _ in tqdm(range(n_game)):
